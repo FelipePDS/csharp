@@ -1,2 +1,2 @@
 # csharp
-Csharp exercises :tea:
+Csharp exercises :coffee:
