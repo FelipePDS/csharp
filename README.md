@@ -23,4 +23,10 @@
     <td>2021/07/05</td>
     <td>:heavy_check_mark:</td>
   </tr>
+  <tr align="center">
+    <td><kbd><a href="https://github.com/FelipePDS/csharp/tree/main/TypeConversion">Type Conversion</a></kbd></td>
+    <td>How to cast safely using pattern matching and the is and as operators</td>
+    <td>2021/07/05</td>
+    <td>:heavy_check_mark:</td>
+  </tr>
 </table>
