@@ -29,4 +29,10 @@
     <td>2021/07/05</td>
     <td>:heavy_check_mark:</td>
   </tr>
+  <tr align="center">
+    <td><kbd><a href="https://github.com/FelipePDS/csharp/tree/main/PatternMatching">Pattern Matching</a></kbd></td>
+    <td>How to Use Pattern Matching to Create Type-Driven and Data-Driven Algorithms</td>
+    <td>2021/07/06</td>
+    <td>:heavy_check_mark:</td>
+  </tr>
 </table>
