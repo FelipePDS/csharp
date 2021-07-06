@@ -1,0 +1,7 @@
+C:\Users\Alexandre\source\repos\PatternMatching\PatternMatching\bin\Debug\PatternMatching.exe.config
+C:\Users\Alexandre\source\repos\PatternMatching\PatternMatching\bin\Debug\PatternMatching.exe
+C:\Users\Alexandre\source\repos\PatternMatching\PatternMatching\bin\Debug\PatternMatching.pdb
+C:\Users\Alexandre\source\repos\PatternMatching\PatternMatching\obj\Debug\PatternMatching.csproj.AssemblyReference.cache
+C:\Users\Alexandre\source\repos\PatternMatching\PatternMatching\obj\Debug\PatternMatching.csproj.CoreCompileInputs.cache
+C:\Users\Alexandre\source\repos\PatternMatching\PatternMatching\obj\Debug\PatternMatching.exe
+C:\Users\Alexandre\source\repos\PatternMatching\PatternMatching\obj\Debug\PatternMatching.pdb
