@@ -35,4 +35,10 @@
     <td>2021/07/06</td>
     <td>:heavy_check_mark:</td>
   </tr>
+  <tr align="center">
+    <td><kbd><a href="https://github.com/FelipePDS/csharp/tree/main/RazorPagesMovie">Razor Pages</a></kbd></td>
+    <td>mini movie management project (CRUD System) using Razor Pages and Entity Framework</td>
+    <td>2021/07/07</td>
+    <td>:heavy_check_mark:</td>
+  </tr>
 </table>
