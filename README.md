@@ -37,8 +37,14 @@
   </tr>
   <tr align="center">
     <td><kbd><a href="https://github.com/FelipePDS/csharp/tree/main/RazorPagesMovie">Razor Pages</a></kbd></td>
-    <td>mini movie management project (CRUD System) using Razor Pages and Entity Framework</td>
+    <td>Mini movie management project (CRUD System) using Razor Pages and Entity Framework</td>
     <td>2021/07/07</td>
+    <td>:heavy_check_mark:</td>
+  </tr>
+  <tr align="center">
+    <td><kbd><a href="https://github.com/FelipePDS/csharp/tree/main/MvcMovie">Mvc Movie</a></kbd></td>
+    <td>Creating a movie list and its characteristics with an ASP.NET MVC 5 in C#</td>
+    <td>2021/07/10</td>
     <td>:heavy_check_mark:</td>
   </tr>
 </table>
