@@ -47,4 +47,10 @@
     <td>2021/07/10</td>
     <td>:heavy_check_mark:</td>
   </tr>
+  <tr align="center">
+    <td><kbd><a href="https://github.com/FelipePDS/csharp/tree/main/BikeStores">Bike Stores</a></kbd></td>
+    <td>Simulation of a Bike Store to perform a list of sql-server commands to practice</td>
+    <td>2021/07/11</td>
+    <td>:heavy_check_mark:</td>
+  </tr>
 </table>
