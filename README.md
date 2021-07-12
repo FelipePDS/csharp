@@ -116,7 +116,7 @@ $ git pull origin master
   </tr>
   <tr align="center">
     <td><kbd><a href="https://github.com/FelipePDS/csharp/tree/main/CRUDUsingMVCWithAdoNet">CRUD Using MVC With Ado Net</a></kbd></td>
-    <td>Asp.net 5 MVC with Ado Net in c#: CRUD system to list people registered in the database</td>
+    <td>Asp.net 5 MVC with Ado Net in c#: CRUD system to list people registered in the database. <br>Tutorial: <a href="https://www.treinaweb.com.br/blog/operacoes-crud-no-asp-net-mvc-5-com-o-ado-net">treinaweb.com.br</a></td>
     <td>2021/07/12</td>
     <td>:heavy_check_mark:</td>
   </tr>
