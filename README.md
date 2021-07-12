@@ -1,8 +1,8 @@
 # <h1 align="center">C-SHARP</h1>
 
 <p align="center">
-  <a href="https://github.com/FelipePDS/csharp/blob/main/LICENSE"><img src="https://img.shields.io/github/license/FelipePDS/csharp"/></a> 
-  <img src="https://img.shields.io/github/last-commit/FelipePDS/Java?style=for-the-badge"/>
+  <a href="https://github.com/FelipePDS/csharp/blob/main/LICENSE"><img src="https://img.shields.io/github/license/Felipepds/csharp?style=for-the-badge"/></a> 
+  <img src="https://img.shields.io/github/last-commit/FelipePDS/csharp?style=for-the-badge"/>
   <img src="https://img.shields.io/static/v1?label=ASP.NET&message=v5&color=512BD4&style=for-the-badge"/> 
   <img src="https://img.shields.io/static/v1?label=Visual+Studio&message=community+2019&color=5C2D91&style=for-the-badge&logo=VisualStudio"/> 
 </p>
