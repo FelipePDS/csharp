@@ -1,8 +1,69 @@
-# csharp
+# <h1 align="center">C-SHARP</h1>
 
-:coffee: Introduction to C# - exercises and mini projects
+<p align="center">
+  <a href="https://github.com/FelipePDS/csharp/blob/main/LICENSE"><img src="https://img.shields.io/github/license/FelipePDS/csharp?style=for-the-badge"/></a> 
+  <img src="https://img.shields.io/github/last-commit/FelipePDS/Java?style=for-the-badge"/>
+  <img src="https://img.shields.io/static/v1?label=ASP.NET&message=v5&color=512BD4&style=for-the-badge"/> 
+  <img src="https://img.shields.io/static/v1?label=Visual+Studio&message=community+2019&color=5C2D91&style=for-the-badge&logo=VisualStudio"/> 
+</p>
 
-<h2 align="center">Exercises and Mini Project</h2>
+<br>
+<h2 align="center">Topics</h2>
+
+<p align="center">
+  <a href="#objective">:dart: Objective</a> &bull; 
+  <a href="#technologies">:computer: Technologies</a> &bull; 
+  <a href="#clone">:open_file_folder: Clone Subdirectories</a> <br>
+  <a href="#exercises">:pushpin: Exercises and Mini Project</a> &bull; 
+  <a href="#author">:bust_in_silhouette: Author</a> &bull; 
+  <a href="#license">:page_with_curl: License</a>
+</p>
+
+<br>
+<h2 id="objective" align="center">:dart: Objective</h2>
+
+<p align="center">Mini-projects and exercises in C# and ASP.NET Core 5, projects and exercises are tutorials and documentation, where anyone has access.</p>
+
+<br>
+<h2 align="center" id="technologies">:computer: Technologies</h2>
+
+<p align="center">
+  &bull; <a href="https://dotnet.microsoft.com/learn/csharp">C#</a> <br>
+  &bull; <a href="https://asp.net/">Asp.net Core 5</a> <br>
+  &bull; <a href="https://visualstudio.microsoft.com/pt-br/downloads/">Code Editor - Visual Studio 2019</a>
+</p>
+
+<br>
+<h2 align="center" id="clone">:open_file_folder: Clone Subdirectories</h2>
+
+<p align="center">If you want to clone one of the exercises (subdirectories), just have <kbd><a href="https://git-scm.com/downloads">git bash</a></kbd> on your computer to give the following commands</p>
+
+```bash
+# create a folder with the name of the exercise and enter it
+$ mkdir name-dir && cd name-dir
+
+# start a git repository to access the repository
+$ git init
+
+# crawl the repositorie
+$ git remote add -f origin https://github.com/FelipePDS/csharp
+
+# active sparse checkout
+$ git config core.sparseCheckout true
+
+# Create a file in the path: .git/csharp/sparse-checkout
+# And insert the name of the subdirectory you want to clone
+$ echo 'nameOfTheSubdirectory' >> .git/csharp/sparse-checkout
+
+# pull the subdirectory
+$ git pull origin master
+```
+<blockquote>Font: <a href="https://terminalroot.com.br/2019/09/como-clonar-somente-um-subdiretorio-com-git-ou-svn.html">terminalroot.com.br</a></blockquote>
+
+<p>If you want to clone the entire project: <code>$ git clone https://github.com/FelipePDS/csharp.git</code></p>
+
+<br>
+<h2 id="exercises" align="center">:pushpin: Exercises and Mini Project</h2>
 
 <table align="center">
   <tr align="center">
@@ -54,3 +115,14 @@
     <td>:heavy_check_mark:</td>
   </tr>
 </table>
+
+<br>
+<h2 align="center" id="author">:bust_in_silhouette: Author</h2>
+
+<p align="center">:pencil: by <a href="https://felipepds.github.io//">FelipePDS</a></p>
+<p align="center"><a href="https://www.linkedin.com/in/felipe-p-da-silva-a55b891ba/?lipi=urn%3Ali%3Apage%3Ad_flagship3_feed%3BiErPy3g7Q1KGOaD%2BsGw%2Fpg%3D%3D"><img src="https://img.shields.io/static/v1?label=+&message=Felipe+P.+Da+Silva&color=0A66C2&style=flat&logo=linkedin&logoColor=white"/></a> <a href="https://twitter.com/FelipePintoDaS1"><img src="https://img.shields.io/static/v1?label=+&message=@FelipePintoDaS1&color=1DA1F2&style=flat&logo=twitter&logoColor=white"/></a> <img src="https://img.shields.io/static/v1?label=+&message=felipepdasilva66@gmail.com&color=EA4335&style=flat&logo=gmail&logoColor=white"/></p>
+
+<br>
+<h2 align="center" id="license">:page_with_curl: License</h2>
+
+<p align="center"><a href="https://github.com/FelipePDS/csharp/blob/main/LICENSE">MIT License</a> &nbsp;&bull;&nbsp; &copy; FelipePDS</p>
