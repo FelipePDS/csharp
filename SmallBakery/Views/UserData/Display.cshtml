@@ -1,0 +1,43 @@
+﻿
+@{
+    ViewBag.Title = "Reading Data from a File";
+
+    var result = "";
+    Array userData = null;
+    char[] delimeterChar = { ',' };
+
+    var dataFilePath = Server.MapPath("~/App_Data/data.txt");
+
+    if (File.Exists(dataFilePath))
+    {
+        userData = File.ReadAllLines(dataFilePath);
+
+        if (userData == null) { result = "The file is empty"; }
+    }
+    else
+    {
+        result = "The file does not exists";
+    }
+}
+
+<h2>Reading Data from a File</h2>
+
+@result
+
+@if (result == "")
+{
+    <ol>
+        @foreach (string dataLine in userData)
+        {
+            <li>
+                User
+                <ul>
+                    @foreach (string dataItem in dataLine.Split(delimeterChar))
+                    {
+                        <li>@dataItem</li>
+                    }
+                </ul>
+            </li>
+        }
+    </ol>
+}

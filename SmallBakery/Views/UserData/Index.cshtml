@@ -1,0 +1,47 @@
+﻿
+@{
+    ViewBag.Title = "User Data";
+
+    var result = "";
+
+    if (IsPost)
+    {
+        var firstName = Request["FirstName"];
+        var lastName = Request["LastName"];
+        var email = Request["Email"];
+
+        var userData = $"{firstName},{lastName},{email}{Environment.NewLine}";
+
+        var dataFilePath = Server.MapPath("~/App_Data/data.txt");
+        File.AppendAllText(@dataFilePath, userData);
+
+        result = "Information Saved!";
+    }
+}
+
+<h2>Write Data to a File</h2>
+
+
+<form id="form1" method="POST">
+    <div class="form-group">
+        <label for="exampleInputEmail1">First Name</label>
+        <input type="text" class="form-control" id="exampleInputEmail1" name="FirstName" placeholder="Enter First Name">
+    </div>
+    <div class="form-group">
+        <label for="exampleInputPassword1">Last Name</label>
+        <input type="text" class="form-control" id="exampleInputPassword1" name="LastName" placeholder="Enter Last Name">
+    </div>
+    <div class="form-group">
+        <label for="exampleInputEmail1">Email</label>
+        <input type="email" class="form-control" id="exampleInputEmail1" name="Email" placeholder="Enter email">
+    </div>
+    <button type="submit" class="btn btn-primary">Submit</button>
+</form>
+
+@if (result != "")
+{
+    <p>Result: @result</p>
+}
+
+<br />
+@Html.ActionLink("Ver dados dos usuários cadastrados no arquivo", "Display")
