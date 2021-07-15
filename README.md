@@ -120,6 +120,12 @@ $ git pull origin master
     <td>2021/07/12</td>
     <td>:heavy_check_mark:</td>
   </tr>
+  <tr align="center">
+    <td><kbd><a href="https://github.com/FelipePDS/csharp/tree/main/SmallBakery">Small Bakery</a></kbd></td>
+    <td>Managing files through an MVC project</td>
+    <td>2021/07/15</td>
+    <td>:heavy_check_mark:</td>
+  </tr>
 </table>
 
 <br>
