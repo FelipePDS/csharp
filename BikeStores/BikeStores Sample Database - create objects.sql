@@ -158,3 +158,86 @@ CREATE TABLE pm.members (
 	FOREIGN KEY (project_id)
 		REFERENCES pm.projects (id)
 );
+
+-- ADD NEW TABLE
+
+USE BikeStores;
+
+CREATE TABLE sales.promotions (
+	promotion_id INT PRIMARY KEY IDENTITY (1, 1),
+	promotion_name VARCHAR (255) NOT NULL,
+	discount NUMERIC (3, 2) DEFAULT 0,
+	start_date DATE NOT NULL,
+	expired_date DATE NOT NULL
+);
+
+-- ADD NEW TABLES
+
+USE BikeStores;
+
+CREATE TABLE sales.address (
+	address_id INT PRIMARY KEY IDENTITY (1, 1),
+	street VARCHAR (255) NOT NULL,
+	city VARCHAR (50),
+	state VARCHAR (25),
+	zip_code VARCHAR (5)
+);
+
+
+-- ADD NEW TABLE
+
+CREATE TABLE sales.taxes (
+	tax_id INT PRIMARY KEY IDENTITY (1, 1),
+	state VARCHAR (50) NOT NULL UNIQUE,
+	state_tax_rate DEC (3, 2),
+	avg_local_tax_rate DEC (3, 2),
+	combined_rate AS state_tax_rate + avg_local_tax_rate,
+	max_local_tax_rate DEC (3, 2),
+	updated_at DATETIME
+);
+
+-- ADD NEW TABLE
+
+USE BikeStores;
+
+CREATE TABLE sales.targets (
+	target_id INT PRIMARY KEY,
+	percentage DECIMAL (4, 2) NOT NULL DEFAULT 0
+);
+
+CREATE TABLE sales.commisions (
+	staff_id INT PRIMARY KEY,
+	target_id INT,
+	base_amount DECIMAL (10, 2) NOT NULL DEFAULT 0,
+	commission DECIMAL (10, 2) NOT NULL DEFAULT 0,
+	FOREIGN KEY (target_id)
+		REFERENCES sales.targets (target_id),
+	FOREIGN KEY (staff_id)
+		REFERENCES sales.staffs (staff_id)
+);
+
+
+-- CREATE NEW TABLE
+
+USE BikeStores;
+
+SELECT *
+INTO production.product_history
+FROM
+	production.products;
+
+
+-- CREATE NEW TABLE
+
+CREATE TABLE sales.category (
+	category_id INT PRIMARY KEY,
+	category_name VARCHAR(255) NOT NULL,
+	amount DECIMAL(10, 2)
+);
+
+
+CREATE TABLE sales.category_staging (
+	category_id INT PRIMARY KEY,
+	category_name VARCHAR(255) NOT NULL,
+	amount DECIMAL(10, 2)
+);

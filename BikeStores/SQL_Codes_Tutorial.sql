@@ -1812,3 +1812,586 @@ FROM
 	sales.order_items
 ORDER BY
 	product_id;
+
+
+
+
+
+
+
+-- CTE
+
+WITH cte_sales_amount (staff, sales, year) AS (
+	SELECT
+		first_name + ' ' + last_name,
+		SUM(quantity * list_price * (1 - discount)),
+		YEAR(order_date)
+	FROM
+		sales.orders o
+		INNER JOIN sales.order_items i
+			ON i.order_id = o.order_id
+		INNER JOIN sales.staffs s
+			ON s.staff_id = o.staff_id
+	GROUP BY
+		first_name + ' ' + last_name,
+		YEAR(order_date)
+)
+
+SELECT
+	staff,
+	sales
+FROM
+	cte_sales_amount
+WHERE
+	year = 2018;
+
+
+
+
+
+
+
+
+
+
+WITH cte_sales AS (
+	SELECT
+		staff_id,
+		COUNT (*) order_count
+	FROM
+		sales.orders
+	WHERE
+		YEAR(order_date) = 2018
+	GROUP BY
+		staff_id
+)
+
+SELECT
+	AVG(order_count) average_orders_by_staff
+FROM
+	cte_sales;
+
+
+
+
+
+
+
+WITH cte_categories_counts (
+	category_id,
+	category_name,
+	product_count
+)
+AS (
+	SELECT
+		c.category_id,
+		c.category_name,
+		COUNT(p.product_id)
+	FROM
+		production.products p
+		INNER JOIN	production.categories c
+			ON c.category_id = p.category_id
+	GROUP BY
+		c.category_id,
+		c.category_name
+),
+cte_category_sales(category_id, sales) AS (
+	SELECT 
+		p.category_id,
+		SUM (i.quantity * i.list_price * (1 - discount))
+	FROM
+		sales.order_items i
+		INNER JOIN production.products p
+			ON p.product_id = i.product_id
+		INNER JOIN sales.orders o
+			ON o.order_id = i.order_id
+	GROUP BY
+		p.category_id
+)
+
+SELECT
+	c.category_id,
+	c.category_name,
+	c.product_count,
+	s.sales
+FROM
+	cte_categories_counts c
+	INNER JOIN cte_category_sales s
+		ON s.category_id = c.category_id
+ORDER BY
+	c.category_name;
+
+
+
+
+
+
+
+
+-- RECURSIVE CTE
+
+WITH cte_numbers (n, weekday) AS (
+	SELECT
+		0,
+		DATENAME(DW, 0)
+	UNION ALL
+	SELECT
+		n + 1,
+		DATENAME(DW, n + 1)
+	FROM
+		cte_numbers
+	WHERE
+		n < 6
+)
+
+SELECT
+	weekday
+FROM cte_numbers;
+
+
+
+
+
+
+
+
+
+WITH cte_org AS (
+	SELECT
+		staff_id,
+		first_name,
+		manager_id
+	FROM
+		sales.staffs
+	WHERE
+		manager_id IS NULL
+	UNION ALL
+	SELECT
+		e.staff_id,
+		e.first_name,
+		e.manager_id
+	FROM
+		sales.staffs e
+		INNER JOIN cte_org o
+			ON o.staff_id = e.manager_id
+)
+SELECT * FROM cte_org;
+
+
+
+
+
+
+
+
+-- PIVOTS
+
+SELECT 
+	* 
+FROM (
+	SELECT	
+		category_name,
+		product_id
+	FROM
+		production.products p
+		INNER JOIN production.categories c
+			ON c.category_id = p.category_id
+) t
+PIVOT (
+	COUNT (product_id)
+	FOR category_name IN (
+		[Children Bicycles], 
+        [Comfort Bicycles], 
+        [Cruisers Bicycles], 
+        [Cyclocross Bicycles], 
+        [Electric Bikes], 
+        [Mountain Bikes], 
+        [Road Bikes]
+	)
+) AS pivot_table;
+
+
+
+
+
+
+SELECT
+	*
+FROM (
+	SELECT
+		category_name,
+		product_id,
+		model_year
+	FROM
+		production.products p
+		INNER JOIN production.categories c
+			ON c.category_id = p.category_id
+) t
+PIVOT (
+	COUNT (product_id)
+	FOR category_name IN (
+		[Children Bicycles], 
+        [Comfort Bicycles], 
+        [Cruisers Bicycles], 
+        [Cyclocross Bicycles], 
+        [Electric Bikes], 
+        [Mountain Bikes], 
+        [Road Bikes]
+	)
+) AS pivot_table
+ORDER BY
+	model_year;
+
+
+
+
+
+-- GET CATEGORIES COLUMNS NAME:
+
+DECLARE
+	@columns NVARCHAR(MAX) = '',
+	@sql NVARCHAR(MAX) = '';
+
+SELECT
+	@columns += QUOTENAME(category_name) + ','
+FROM
+	production.categories
+ORDER BY
+	category_name;
+
+SET @columns = LEFT(@columns, LEN(@columns) - 1);
+
+SET @sql = '
+	SELECT * FROM
+	(
+		SELECT
+			category_name,
+			product_id,
+			model_year
+		FROM
+			production.products p
+			INNER JOIN production.categories c
+				ON c.category_id = p.category_id
+	) t
+	PIVOT (
+		COUNT (product_id)
+		FOR category_name IN ('+ @columns +')
+	) AS pivot_table
+';
+
+EXECUTE sp_executesql @sql;
+
+
+
+
+
+
+
+-- INSERT INTO
+
+INSERT INTO sales.promotions (
+	promotion_name,
+	discount,
+	start_date,
+	expired_date
+)
+VALUES
+	(
+		'2018 Summer Promotion',
+		0.15,
+		'20180601',
+		'20180901'
+	);
+
+
+
+
+
+INSERT INTO sales.promotions (
+	promotion_name,
+	discount,
+	start_date,
+	expired_date
+) OUTPUT inserted.promotion_id
+VALUES
+	(
+		'2018 Fall Promotion',
+        0.15,
+        '20181001',
+        '20181101'
+	);
+
+
+
+
+
+
+INSERT INTO sales.promotions (
+	promotion_name,
+	discount,
+	start_date,
+	expired_date
+) 
+OUTPUT
+	inserted.promotion_id,
+	inserted.promotion_name,
+	inserted.start_date,
+	inserted.expired_date
+VALUES (
+	'2018 Winter Promotion',
+    .2,
+    '20181201',
+    '20190101'
+);
+
+
+
+
+
+
+SET IDENTITY_INSERT sales.promotions ON;
+
+INSERT INTO sales.promotions (
+	promotion_id,
+	promotion_name,
+	discount,
+	start_date,
+	expired_date
+) OUTPUT inserted.promotion_id
+VALUES (
+	4,
+    '2019 Spring Promotion',
+    0.25,
+    '20190201',
+    '20190301'
+);
+
+SET IDENTITY_INSERT sales.promotions OFF;
+
+
+
+
+
+
+-- INSERT MULTIPLE ROWS
+
+INSERT INTO sales.promotions (
+	promotion_name,
+	discount,
+	start_date,
+	expired_date
+) 
+VALUES
+	(
+        '2019 Summer Promotion',
+        0.15,
+        '20190601',
+        '20190901'
+    ),
+    (
+        '2019 Fall Promotion',
+        0.20,
+        '20191001',
+        '20191101'
+    ),
+    (
+        '2019 Winter Promotion',
+        0.25,
+        '20191201',
+        '20200101'
+    );
+
+
+
+
+
+
+INSERT INTO sales.promotions (
+	promotion_name, discount, start_date, expired_date
+) OUTPUT inserted.promotion_id
+VALUES
+	('2020 Summer Promotion',0.25,'20200601','20200901'),
+	('2020 Fall Promotion',0.10,'20201001','20201101'),
+	('2020 Winter Promotion', 0.25,'20201201','20210101');
+
+
+
+
+-- INSERT INTO SELECT
+
+INSERT INTO sales.address (street, city, state, zip_code)
+SELECT
+	street,
+	city,
+	state,
+	zip_code
+FROM
+	sales.customers
+ORDER BY
+	first_name,
+	last_name;
+
+
+
+
+
+INSERT INTO
+	sales.address (street, city, state, zip_code)
+SELECT
+	street,
+	city,
+	state,
+	zip_code
+FROM
+	sales.stores
+WHERE
+	city IN ('Santa Cruz', 'Baldwin');
+
+
+
+
+
+INSERT TOP (10)
+INTO sales.address (street, city, state, zip_code)
+SELECT
+	street,
+	city,
+	state,
+	zip_code
+FROM
+	sales.customers
+ORDER BY
+	first_name,
+	last_name;
+
+
+
+
+
+INSERT TOP (10) PERCENT
+INTO sales.address (street, city, state, zip_code)
+SELECT
+	street,
+	city,
+	state,
+	zip_code
+FROM
+	sales.customers
+ORDER BY
+	first_name,
+	last_name;
+
+
+
+
+
+
+
+-- UPDATE
+
+UPDATE sales.taxes
+SET updated_at = GETDATE();
+
+
+
+
+
+UPDATE sales.taxes
+SET
+	max_local_tax_rate += 0.02,
+	avg_local_tax_rate += 0.01
+WHERE
+	max_local_tax_rate = 0.01;
+
+
+
+
+
+
+
+-- UPDATE JOIN
+
+UPDATE
+	sales.commisions
+SET
+	sales.commisions.commission = 
+		c.base_amount * t.percentage
+FROM
+	sales.commisions c
+	INNER JOIN sales.targets t
+		ON t.target_id = c.target_id;
+
+
+
+
+
+
+
+UPDATE
+	sales.commisions
+SET
+	sales.commisions.commission =
+		c.base_amount * COALESCE(t.percentage, 0.1)
+FROM
+	sales.commisions c
+	LEFT JOIN sales.targets t
+		ON c.target_id = t.target_id;
+
+
+
+
+
+
+
+
+-- DELETE
+
+DELETE 
+	TOP (21)
+FROM 
+	production.product_history;
+
+
+
+
+
+DELETE 
+	TOP (5) PERCENT
+FROM 
+	production.product_history;
+
+
+
+
+DELETE
+FROM	
+	production.product_history
+WHERE
+	model_year = 2017;
+
+
+
+
+
+DELETE FROM production.product_history; -- => TRUNCATE TABLE IS MORE EFFICIENT
+
+
+
+
+
+
+
+-- MERGE
+
+MERGE sales.category t
+	USING sales.category_staging s
+ON (t.category_id = s.category_id)
+WHEN MATCHED
+	THEN UPDATE SET
+		t.category_name = s.category_name,
+		t.amount = s.amount
+WHEN NOT MATCHED BY TARGET
+	THEN INSERT (category_id, category_name, amount)
+		VALUES (s.category_id, s.category_name, s.amount)
+WHEN NOT MATCHED BY SOURCE
+	THEN DELETE;
