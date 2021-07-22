@@ -30,6 +30,7 @@
 <p align="center">
   &bull; <a href="https://dotnet.microsoft.com/learn/csharp">C#</a> <br>
   &bull; <a href="https://asp.net/">Asp.net Core 5</a> <br>
+  &bull; <a href="https://docs.microsoft.com/pt-br/sql/ssms/download-sql-server-management-studio-ssms">SQL Server</a> <br>
   &bull; <a href="https://visualstudio.microsoft.com/pt-br/downloads/">Code Editor - Visual Studio 2019</a>
 </p>
 
