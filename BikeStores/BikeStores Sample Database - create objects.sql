@@ -241,3 +241,13 @@ CREATE TABLE sales.category_staging (
 	category_name VARCHAR(255) NOT NULL,
 	amount DECIMAL(10, 2)
 );
+
+
+-- CREATE NEW TABLE IN THE DBO SCHEMA
+
+CREATE TABLE dbo.offices (
+	office_id INT PRIMARY KEY IDENTITY,
+	office_name NVARCHAR(40) NOT NULL,
+	office_address NVARCHAR(255) NOT NULL,
+	phone VARCHAR (20)
+);

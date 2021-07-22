@@ -9266,3 +9266,12 @@ VALUES
     (4,'Cyclocross Bicycles',20000),
     (5,'Electric Bikes',10000),
     (6,'Mountain Bikes',10000);
+
+
+-- ADD NEW VALUES TO DBO OFFICES TABLE
+
+INSERT INTO 
+	dbo.offices (office_name, office_address)
+VALUES
+	('Silicon Valley','400 North 1st Street, San Jose, CA 95130'),
+    ('Sacramento','1070 River Dr., Sacramento, CA 95820');
