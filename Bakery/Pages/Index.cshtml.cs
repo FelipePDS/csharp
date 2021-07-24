@@ -2,8 +2,11 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
+using Bakery.Data;
+using Bakery.Models;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.RazorPages;
+using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Logging;
 
 namespace Bakery.Pages
@@ -12,14 +15,24 @@ namespace Bakery.Pages
     {
         private readonly ILogger<IndexModel> _logger;
 
-        public IndexModel(ILogger<IndexModel> logger)
+        private readonly BakeryContext db;
+        public List<Product> Products { get; set; } = new List<Product>();
+        public Product FeaturedProduct { get; set; }
+        public List<Product> OtherProducts { get; set; }
+
+        public async Task OnGetAsync()
         {
-            _logger = logger;
+            Products = await db.Products.ToListAsync();
+            FeaturedProduct = Products.ElementAt(new Random().Next(Products.Count));
+            OtherProducts = Products.FindAll(p => p.Id != FeaturedProduct.Id);
         }
 
-        public void OnGet()
-        {
+        public IndexModel(BakeryContext db) => this.db = db;
 
-        }
+        // public IndexModel(BakeryContext db, ILogger<IndexModel> logger)
+        // {
+        //     this.db = db;
+        //     _logger = logger;
+        // }
     }
 }
