@@ -129,9 +129,9 @@ $ git pull origin master
   </tr>
   <tr align="center">
     <td><kbd><a href="https://github.com/FelipePDS/csharp/tree/main/Bakery">Bakery - Razor Page</a></kbd></td>
-    <td>Bakery demo site made with Razor Page <br>Tutorial: <a href="https://www.learnrazorpages.com/razor-pages/tutorial">www.learnrazorpages.com</a></td>
+    <td>Bakery demo site made with Razor Page <br>Tutorial: <a href="https://www.learnrazorpages.com/razor-pages/tutorial/bakery">www.learnrazorpages.com</a></td>
     <td>2021/07/23</td>
-    <td>:construction:</td>
+    <td>:heavy_check_mark:</td>
   </tr>
 </table>
 
