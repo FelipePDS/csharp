@@ -2,6 +2,7 @@ using System;
 using System.ComponentModel.DataAnnotations;
 using System.Collections.Generic;
 using System.Linq;
+using System.Net.Mail;
 using System.Threading.Tasks;
 using Bakery.Data;
 using Bakery.Models;
@@ -38,6 +39,26 @@ namespace Bakery.Pages
 
             if (ModelState.IsValid)
             {
+                var body = $@"<p>Thank you, we have received your order for {OrderQuantity} unit(s) of {Product.Name}!</p>
+                    <p>Your address is: <br/>{OrderShipping.Replace("\n", "<br/>")}</p>
+                    Your total is ${Product.Price * OrderQuantity}.<br/>
+                    We will contact you if we have questions about your order.  Thanks!<br/>";
+
+                using(var smtp = new SmtpClient()) 
+                {
+                    smtp.DeliveryMethod = SmtpDeliveryMethod.SpecifiedPickupDirectory;
+                    smtp.PickupDirectoryLocation = @"c:\mailpickup";
+
+                    var message = new MailMessage();
+                    message.From = new MailAddress("teste@mail.com");
+                    message.To.Add(OrderEmail);
+                    message.Subject = "Fourth Coffee - New Order";
+                    message.Body = body;
+                    message.IsBodyHtml = true;
+
+                    await smtp.SendMailAsync(message);
+                }
+
                 return RedirectToPage("OrderSuccess");
             }
 
