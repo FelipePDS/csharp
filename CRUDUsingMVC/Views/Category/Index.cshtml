@@ -1,0 +1,35 @@
+﻿@model IEnumerable<CRUDUsingMVC.Models.Category>
+
+@{
+    ViewBag.Title = "Categories";
+}
+
+<p>
+    @Html.ActionLink("Create New", "create")
+</p>
+<table class="table">
+    <tr>
+        <th>
+            @Html.DisplayNameFor(model => model.CategoryName)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.CategoryName)
+        </th>
+    </tr>
+
+    @foreach (var category in Model)
+    {
+        <tr>
+            <td>
+                @Html.DisplayFor(modelItem => category.CategoryName)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => category.CategoryDesc)
+            </td>
+            <td>
+                <a href="./edit?id=@Html.DisplayFor(modelItem => category.Id)">Edit</a> |
+                <button type="button" class="btn btn-link" data-item="@category.Id">Deletar</button>
+            </td>
+        </tr>
+    }
+</table>
