@@ -13,16 +13,16 @@ namespace CRUDUsingMVC.Data
 
         TEntity GetOne(string sql);
 
-        string GetPrimaryKeyFromEntity();
+        void Save(string sql);
 
         List<TEntity> GetAll();
 
         TEntity GetById(TKey id);
 
-        //void Create(TEntity entity);
+        void Create(TEntity entity);
 
-        //void Update(TEntity entity, TKey id);
+        void UpdateById(TEntity entity, TKey id);
 
-        //void DeleteById(TKey id);
+        void DeleteById(TKey id);
     }
 }

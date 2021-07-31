@@ -6,7 +6,7 @@ using CRUDUsingMVC.Models;
 
 namespace CRUDUsingMVC.Data
 {
-    public class ProductRepository : GenericRepository<Product, int>
+    public class ProductRepository : GenericRepository<Product, int>, IProductRepository
     {
         public ProductRepository(Product product)
             : base(product)

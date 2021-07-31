@@ -6,7 +6,7 @@ using CRUDUsingMVC.Models;
 
 namespace CRUDUsingMVC.Data
 {
-    public class CategoryRepository : GenericRepository<Category, int>
+    public class CategoryRepository : GenericRepository<Category, int>, ICategoryRepository
     {
         public CategoryRepository(Category category)
             : base(category)

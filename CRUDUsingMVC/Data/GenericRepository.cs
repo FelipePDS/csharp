@@ -4,6 +4,12 @@ using System.Data;
 using System.Data.SqlClient;
 using System.Web.Configuration;
 
+//Refatorar:
+
+//Adicionar parametros nos sqlcommand
+//Fazer excessões de erros sql
+//Melhorar conversão do entity type
+
 namespace CRUDUsingMVC.Data
 {
     public class GenericRepository<TEntity, TKey>
@@ -22,7 +28,7 @@ namespace CRUDUsingMVC.Data
             _entityName = entityObjectNames[entityObjectNames.Length - 1];
         }
 
-        protected List<TEntity> GetList(string sql)
+        public List<TEntity> GetList(string sql)
         {
             using (var db = new SqlConnection(_stringConnection))
             {
@@ -43,27 +49,27 @@ namespace CRUDUsingMVC.Data
                             foreach (var entityProperty in entityProperties)
                             {
                                 var entityType = entityProperty.PropertyType.ToString().Split('.')[1];
-                                string entityName = entityProperty.Name;
+                                string entityPropertyName = entityProperty.Name;
 
                                 switch (entityType)
                                 {
                                     case "Int32":
-                                        entityProperty.SetValue(entity, Convert.ToInt32(reader[entityName]));
+                                        entityProperty.SetValue(entity, Convert.ToInt32(reader[entityPropertyName]));
                                         break;
                                     case "String":
-                                        entityProperty.SetValue(entity, Convert.ToString(reader[entityName]));
+                                        entityProperty.SetValue(entity, Convert.ToString(reader[entityPropertyName]));
                                         break;
                                     case "Decimal":
-                                        entityProperty.SetValue(entity, Convert.ToDecimal(reader[entityName]));
+                                        entityProperty.SetValue(entity, Convert.ToDecimal(reader[entityPropertyName]));
                                         break;
                                     case "Char":
-                                        entityProperty.SetValue(entity, Convert.ToChar(reader[entityName]));
+                                        entityProperty.SetValue(entity, Convert.ToChar(reader[entityPropertyName]));
                                         break;
                                     case "Byte":
-                                        entityProperty.SetValue(entity, Convert.ToByte(reader[entityName]));
+                                        entityProperty.SetValue(entity, Convert.ToByte(reader[entityPropertyName]));
                                         break;
                                     case "Boolean":
-                                        entityProperty.SetValue(entity, Convert.ToBoolean(reader[entityName]));
+                                        entityProperty.SetValue(entity, Convert.ToBoolean(reader[entityPropertyName]));
                                         break;
                                 }
                             }
@@ -81,7 +87,7 @@ namespace CRUDUsingMVC.Data
             }
         }
 
-        protected TEntity GetOne(string sql)
+        public TEntity GetOne(string sql)
         {
             using (var db = new SqlConnection(_stringConnection))
             {
@@ -102,28 +108,28 @@ namespace CRUDUsingMVC.Data
                             {
                                 foreach (var entityProperty in entityProperties)
                                 {
-                                    var entityType = entityProperty.PropertyType.ToString().Split('.')[1];
-                                    string entityName = entityProperty.Name;
+                                    var entityPropertyType = entityProperty.PropertyType.ToString().Split('.')[1];
+                                    string entityPropertyName = entityProperty.Name;
 
-                                    switch (entityType)
+                                    switch (entityPropertyType)
                                     {
                                         case "Int32":
-                                            entityProperty.SetValue(entity, Convert.ToInt32(reader[entityName]));
+                                            entityProperty.SetValue(entity, Convert.ToInt32(reader[entityPropertyName]));
                                             break;
                                         case "String":
-                                            entityProperty.SetValue(entity, Convert.ToString(reader[entityName]));
+                                            entityProperty.SetValue(entity, Convert.ToString(reader[entityPropertyName]));
                                             break;
                                         case "Decimal":
-                                            entityProperty.SetValue(entity, Convert.ToDecimal(reader[entityName]));
+                                            entityProperty.SetValue(entity, Convert.ToDecimal(reader[entityPropertyName]));
                                             break;
                                         case "Char":
-                                            entityProperty.SetValue(entity, Convert.ToChar(reader[entityName]));
+                                            entityProperty.SetValue(entity, Convert.ToChar(reader[entityPropertyName]));
                                             break;
                                         case "Byte":
-                                            entityProperty.SetValue(entity, Convert.ToByte(reader[entityName]));
+                                            entityProperty.SetValue(entity, Convert.ToByte(reader[entityPropertyName]));
                                             break;
                                         case "Boolean":
-                                            entityProperty.SetValue(entity, Convert.ToBoolean(reader[entityName]));
+                                            entityProperty.SetValue(entity, Convert.ToBoolean(reader[entityPropertyName]));
                                             break;
                                     }
                                 }
@@ -136,6 +142,25 @@ namespace CRUDUsingMVC.Data
                 catch (Exception ex)
                 {
                     throw ex;
+                }
+            }
+        }
+
+        public void Save(string sql)
+        {
+            using (var db = new SqlConnection(_stringConnection))
+            {
+                using (var cmd = new SqlCommand(sql, db))
+                {
+                    try
+                    {
+                        db.Open();
+                        cmd.ExecuteNonQuery();
+                    }
+                    catch (Exception ex)
+                    {
+                        throw ex;
+                    }
                 }
             }
         }
@@ -203,9 +228,9 @@ namespace CRUDUsingMVC.Data
         {
             try
             {
-                string primaryKey = GetPrimaryKeyFromEntity();
+                string primaryKeyName = GetPrimaryKeyFromEntity();
 
-                string sqlCommand = @"SELECT * FROM " + _entityName + " WHERE " + primaryKey + " = " + id;
+                string sqlCommand = @"SELECT * FROM " + _entityName + " WHERE " + primaryKeyName + " = " + id;
 
                 TEntity entity = GetOne(sqlCommand);
 
@@ -217,19 +242,100 @@ namespace CRUDUsingMVC.Data
             }
         }
 
-        //public void Create(TEntity entity)
-        //{
+        public void Create(TEntity entity)
+        {
+            try
+            {
+                string sqlCommandBase = "INSERT INTO " + _entityName + " ";
+                string sqlCommandFieldNamesAndValues = "(";
 
-        //}
+                var entityProperties = entity.GetType().GetProperties();
+                string primaryKeyName = GetPrimaryKeyFromEntity();
 
-        //public void Update(TEntity entity, TKey id)
-        //{
+                foreach (var entityProperty in entityProperties)
+                {
+                    string entityPropertyName = entityProperty.Name;
 
-        //}
+                    if (entityPropertyName != primaryKeyName)
+                    {
+                        sqlCommandFieldNamesAndValues += entityPropertyName + ", ";
+                    }
+                }
 
-        //public void DeleteById(TKey id)
-        //{
+                sqlCommandFieldNamesAndValues += ") VALUES (";
 
-        //}
+                foreach (var entityProperty in entityProperties)
+                {
+                    string entityPropertyName = entityProperty.Name;
+                    var entityPropertyValue = entityProperty.GetValue(entity);
+
+                    if (entityPropertyName != primaryKeyName)
+                    {
+                        sqlCommandFieldNamesAndValues += entityPropertyValue + ", ";
+                    }
+                }
+
+                sqlCommandFieldNamesAndValues += ")";
+
+                sqlCommandFieldNamesAndValues = sqlCommandFieldNamesAndValues.Replace(", )", ")");
+
+                string sqlCommandFull = sqlCommandBase + sqlCommandFieldNamesAndValues;
+
+                Save(sqlCommandFull);
+            }
+            catch (Exception ex)
+            {
+                throw ex;
+            }
+        }
+
+        public void UpdateById(TEntity entity, TKey id)
+        {
+            try
+            {
+                string sqlCommandBase = "UPDATE " + _entityName + " SET ";
+                string sqlCommandSetValues = "";
+
+                var entityProperties = entity.GetType().GetProperties();
+                string primaryKeyName = GetPrimaryKeyFromEntity();
+
+                foreach (var entityProperty in entityProperties)
+                {
+                    string entityPropertyName = entityProperty.Name;
+                    var entityPropertyValue = entityProperty.GetValue(entity);
+
+                    if (entityPropertyName != primaryKeyName)
+                    {
+                        sqlCommandSetValues += entityPropertyName + "=" + entityPropertyValue + " ";
+                    }
+                }
+
+                string sqlCommandFilterById = "WHERE " + primaryKeyName + "=" + id;
+
+                string sqlCommandFull = sqlCommandBase + sqlCommandSetValues + sqlCommandFilterById;
+
+                Save(sqlCommandFull);
+            }
+            catch (Exception ex)
+            {
+                throw ex;
+            }
+        }
+
+        public void DeleteById(TKey id)
+        {
+            try
+            {
+                string primaryKeyName = GetPrimaryKeyFromEntity();
+
+                string sqlCommand = "DELETE FROM " + _entityName + " WHERE " + primaryKeyName + " = " + id;
+
+                Save(sqlCommand);
+            }
+            catch (Exception ex)
+            {
+                throw ex;
+            }
+        }
     }
 }

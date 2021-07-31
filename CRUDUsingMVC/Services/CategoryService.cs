@@ -38,5 +38,47 @@ namespace CRUDUsingMVC.Services
                 throw ex;
             }
         }
+
+        public void Create(Category category)
+        {
+            try
+            {
+                if (category != null)
+                {
+                    _categoryRepository.Create(category);
+                }
+            }
+            catch (Exception ex)
+            {
+                throw ex;
+            }
+        }
+
+        public void UpdateById(Category category, int id)
+        {
+            try
+            {
+                if (category != null)
+                {
+                    _categoryRepository.UpdateById(category, id);
+                }
+            }
+            catch (Exception ex)
+            {
+                throw ex;
+            }
+        }
+
+        public void DeleteById(int id)
+        {
+            try
+            {
+                _categoryRepository.DeleteById(id);
+            }
+            catch (Exception ex)
+            {
+                throw ex;
+            }
+        }
     }
 }

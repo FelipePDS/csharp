@@ -12,27 +12,106 @@ namespace CRUDUsingMVC.Controllers
     {
         private CategoryService _categoryService = new CategoryService();
 
-        // GET: Category List
         [HttpGet]
         public ActionResult Index()
         {
-            List<Category> categoryList = _categoryService.GetAll();
+            try
+            {
+                List<Category> categoryList = _categoryService.GetAll();
 
-            return View(categoryList);
+                return View(categoryList);
+            }
+            catch (Exception ex)
+            {
+                throw ex;
+            }
         }
 
-        // GET: Edit Category
+        [HttpGet]
+        public ActionResult Create()
+        {
+            try
+            {
+                return View();
+            }
+            catch (Exception ex)
+            {
+                throw ex;
+            }
+        }
+
+        [HttpPost]
+        public ActionResult Create(Category category)
+        {
+            try
+            {
+                if (ModelState.IsValid)
+                {
+                    _categoryService.Create(category);
+
+                    return RedirectToAction("Edit", new { id = category.Id });
+                }
+
+                return View(new { category, ErrorMessage = "Fill in all information to create a new category!" });
+            }
+            catch (Exception ex)
+            {
+                throw ex;
+            }
+        }
+
         [HttpGet]
         public ActionResult Edit(int id)
         {
-            Category category = _categoryService.GetById(id);
-
-            if (category == null)
+            try
             {
-                return HttpNotFound();
-            }
+                Category category = _categoryService.GetById(id);
 
-            return View(category);
+                if (category == null)
+                {
+                    return HttpNotFound();
+                }
+
+                return View(category);
+            }
+            catch (Exception ex)
+            {
+                throw ex;
+            }
+        }
+
+        [HttpPost]
+        public ActionResult Edit(Category category)
+        {
+            try
+            {
+                if (ModelState.IsValid)
+                {
+                    _categoryService.UpdateById(category, category.Id);
+                    return RedirectToAction("Index");
+                }
+
+                return View(new { category, ErrorMessage = "Fill in all information to edit category!" });
+            }
+            catch (Exception ex)
+            {
+                throw ex;
+            }
+        }
+
+        [HttpDelete]
+        public ActionResult Delete(int id)
+        {
+            try
+            {
+                _categoryService.DeleteById(id);
+
+                return RedirectToAction("Index");
+            }
+            catch (Exception ex)
+            {
+                throw ex;
+            }
         }
     }
 }
