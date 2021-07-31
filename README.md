@@ -137,7 +137,7 @@ $ git pull origin master
     <td><kbd><a href="https://github.com/FelipePDS/csharp/tree/main/CRUDUsingMVC">Small Store - CRUD Using Asp.Net MVC with Ado.Net</a></kbd></td>
     <td>-</td>
     <td>2021/07/30</td>
-    <td>:heavy_check_mark:</td>
+    <td>:construction:</td>
   </tr>
 </table>
 
