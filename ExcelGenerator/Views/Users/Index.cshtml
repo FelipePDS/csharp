@@ -1,0 +1,107 @@
+﻿@model IEnumerable<ExcelGenerator.Models.User>
+
+@{
+    ViewBag.Title = "User Data";
+}
+
+<p>
+    @Html.ActionLink("Create New", "Create")
+</p>
+
+<div class="body-navigation">
+    <div class="primary-navigation">
+        <form>
+            <div class="form-row align-items-center">
+                <div class="col-auto">
+                    <input 
+                        type="text" 
+                        class="form-control mb-2" 
+                        name="searchString" 
+                        id="searchString" 
+                        placeholder="User name..."
+                    >
+                </div>
+                <div class="col-auto">
+                    <button type="submit" class="btn btn-primary mb-2">Filter</button>
+                </div>
+            </div>
+        </form>
+    </div>
+
+    <div class="secondary-navigation">
+        <button 
+            class="btn btn-success text-upper-case" 
+            onclick="requestExportUserDataToExcelEPPlus()"
+            @*onclick="requestExportUserDataToExcelGoogleLibrary()"*@
+        >
+            Export
+        </button>
+    </div>
+</div>
+
+<div class="categories-container">
+    <table class="table table-dark">
+        <thead>
+            <tr>
+                <th scope="col">
+                    ID
+                </th>
+                <th scope="col">
+                    Name
+                </th>
+                <th scope="col">
+                    Email
+                </th>
+                <th scope="col"></th>
+            </tr>
+        </thead>
+
+        @foreach (var item in Model)
+        {
+            <tr>
+                <td>
+                    @Html.DisplayFor(modelItem => item.Id)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.Name)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.Email)
+                </td>
+                <td>
+                    @Html.ActionLink("Edit", "Edit", new { id = item.Id }, new { @class = "btn btn-success" }) &nbsp;
+                    @Html.ActionLink("Delete", "Delete", new { id = item.Id }, new { @class = "btn btn-danger" })
+                </td>
+            </tr>
+        }
+    </table>
+</div>
+
+@section Scripts
+{
+    <script>
+        function requestExportUserDataToExcelEPPlus() {
+            const url = window.location.protocol + "//" + window.location.host + "@Url.Action("ExportUserDataToExcelEPPlus", "Users")";
+
+            $.ajax({
+                type: "POST",
+                url: url,
+                data: {
+                    users: @Html.Raw(Json.Encode(Model))
+                }
+            });
+        }
+
+        function requestExportUserDataToExcelGoogleLibrary() {
+            const url = window.location.protocol + "//" + window.location.host + "@Url.Action("ExportUserDataToExcelGoogleLibrary", "Users")";
+
+            $.ajax({
+                type: "POST",
+                url: url,
+                data: {
+                    users: @Html.Raw(Json.Encode(Model))
+                }
+            });
+        }
+    </script>
+}
