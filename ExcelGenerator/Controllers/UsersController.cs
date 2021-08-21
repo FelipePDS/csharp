@@ -2,10 +2,14 @@
 using System.Collections.Generic;
 using System.Data;
 using System.Data.Entity;
+using System.Drawing;
+using System.IO;
 using System.Linq;
 using System.Net;
+using System.Text;
 using System.Web;
 using System.Web.Mvc;
+using OfficeOpenXml;
 using ExcelGenerator.Models;
 
 namespace ExcelGenerator.Controllers
@@ -17,14 +21,20 @@ namespace ExcelGenerator.Controllers
         // GET: Users
         public ActionResult Index(string searchString)
         {
-            var users = from u in db.Users select u;
+            var userList = from u in db.Users select u;
 
             if (!String.IsNullOrEmpty(searchString))
             {
-                users = users.Where(user => user.Name.Contains(searchString));
+                userList = userList.Where(user => user.Name.Contains(searchString));
             }
 
-            return View(users);
+            UserViewModel data = new UserViewModel()
+            {
+                UserList = userList,
+                SearchString = searchString
+            };
+
+            return View(data);
         }
 
         // GET: Users/Create
@@ -108,11 +118,49 @@ namespace ExcelGenerator.Controllers
         }
 
         [HttpPost]
-        public ActionResult ExportUserDataToExcelEPPlus(List<User> users)
+        public ActionResult ExportUserDataToExcelEPPlus(IList<User> userList)
         {
-            // Adicionar código de exportar para excel
+            DataTable dataTable = new DataTable("User Data");
 
-            return RedirectToAction("Index");
+            dataTable.Columns.Add("User Name");
+            dataTable.Columns.Add("Email");
+
+            foreach (var user in userList)
+            {
+                dataTable.Rows.Add(user.Name, user.Email);
+            }
+
+            string filePath = "~/Template/Template.xlsx";
+
+            FileInfo fileInfoTemplate = new FileInfo(System.Web.HttpContext.Current.Server.MapPath(filePath));
+
+            ExcelPackage excel = new ExcelPackage(fileInfoTemplate);
+
+            ExcelWorksheet worksheet = excel.Workbook.Worksheets.Add("Teste");
+            worksheet.Name = "User Data";
+            worksheet.TabColor = Color.Black;
+            worksheet.Cells["A1"].LoadFromDataTable(dataTable, true);
+
+            MemoryStream stream = new MemoryStream();
+
+            excel.SaveAs(stream);
+
+            HttpContext.Response.Clear();
+            HttpContext.Response.AddHeader(
+                "content-disposition",
+                string.Format("attachment;filename=Teste_{0}.xlsx", DateTime.Now.ToString("yyyy-MM-dd_HH-mm-ss"))
+            );
+
+            HttpContext.Response.ContentType = "application/vnd.ms-excel";
+            HttpContext.Response.ContentEncoding = Encoding.Default;
+
+            HttpContext.Response.Cache.SetCacheability(HttpCacheability.NoCache);
+
+            stream.WriteTo(Response.OutputStream);
+
+            Response.End();
+
+            return null;
         }
 
         [HttpPost]

@@ -1,4 +1,4 @@
-﻿@model IEnumerable<ExcelGenerator.Models.User>
+﻿@model ExcelGenerator.Models.UserViewModel
 
 @{
     ViewBag.Title = "User Data";
@@ -13,14 +13,32 @@
         <form>
             <div class="form-row align-items-center">
                 <div class="col-auto">
-                    <input 
-                        type="text" 
-                        class="form-control mb-2" 
-                        name="searchString" 
-                        id="searchString" 
-                        placeholder="User name..."
-                    >
+                    @if (!String.IsNullOrEmpty(Model.SearchString))
+                    {
+                        <input 
+                            type="text"
+                            class="form-control mb-2"
+                            name="searchString"
+                            id="searchString"
+                            placeholder="User name..."
+                            value="@Model.SearchString"
+                        >
+                    }
+
+                    else
+                    {
+                        <input 
+                            type="text"
+                            class="form-control mb-2"
+                            name="searchString"
+                            id="searchString"
+                            placeholder="User name..."
+                        >
+                    }
+
                 </div>
+
+
                 <div class="col-auto">
                     <button type="submit" class="btn btn-primary mb-2">Filter</button>
                 </div>
@@ -29,7 +47,7 @@
     </div>
 
     <div class="secondary-navigation">
-        <button 
+        <button
             class="btn btn-success text-upper-case" 
             onclick="requestExportUserDataToExcelEPPlus()"
             @*onclick="requestExportUserDataToExcelGoogleLibrary()"*@
@@ -56,7 +74,7 @@
             </tr>
         </thead>
 
-        @foreach (var item in Model)
+        @foreach (var item in Model.UserList)
         {
             <tr>
                 <td>
@@ -87,7 +105,7 @@
                 type: "POST",
                 url: url,
                 data: {
-                    users: @Html.Raw(Json.Encode(Model))
+                    userList: @Html.Raw(Json.Encode(Model.UserList))
                 }
             });
         }
@@ -99,7 +117,7 @@
                 type: "POST",
                 url: url,
                 data: {
-                    users: @Html.Raw(Json.Encode(Model))
+                    userList: @Html.Raw(Json.Encode(Model.UserList))
                 }
             });
         }

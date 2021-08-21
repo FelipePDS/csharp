@@ -2,8 +2,15 @@
 
 namespace ExcelGenerator.Models
 {
-    public class UserViewModel
+    public class UserViewModel : BaseViewModel
     {
-        public IEnumerable<User> User { get; set; }
+        public UserViewModel()
+        {
+            UserList = new List<User>();
+        }
+
+        public IEnumerable<User> UserList { get; set; }
+
+        public string SearchString { get; set; }
     }
 }
