@@ -1,0 +1,58 @@
+﻿@model IEnumerable<CRUDUsingMVC.Models.Category>
+
+@{
+    ViewBag.Title = "Categories";
+}
+
+<div class="body-navigation">
+    <div class="primary-navigation">
+        <form>
+            <div class="form-row align-items-center">
+                <div class="col-auto">
+                    <input type="text" class="form-control mb-2" id="inlineFormInput" placeholder="Category Name...">
+                </div>
+                <div class="col-auto">
+                    <button type="submit" class="btn btn-primary mb-2">Filter</button>
+                </div>
+            </div>
+        </form>
+    </div>
+
+    <div class="secondary-navigation">
+        <a href="/category/create" class="btn btn-success text-upper-case">Create New</a>
+    </div>
+</div>
+
+<div class="categories-container">
+    <table class="table table-dark">
+        <thead>
+            <tr>
+                <th scope="col">
+                    Category Name
+                </th>
+                <th scope="col">
+                    Category Description
+                </th>
+                <th></th>
+            </tr>
+        </thead>
+
+        @foreach (var category in Model)
+        {
+            <tbody>
+                <tr>
+                    <td>
+                        @Html.DisplayFor(modelItem => category.CategoryName)
+                    </td>
+                    <td>
+                        @Html.DisplayFor(modelItem => category.CategoryDesc)
+                    </td>
+                    <td>
+                        <a href="/category/edit?id=@Html.DisplayFor(modelItem => category.Id)" class="btn btn-success">Edit</a>
+                        <button type="button" class="btn btn-danger" data-item="@category.Id">Delete</button>
+                    </td>
+                </tr>
+            </tbody>
+        }
+    </table>
+</div>
